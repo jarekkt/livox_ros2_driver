@@ -72,6 +72,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${livox_sdk_INCLUDE_DIRS})
 # include file direcotry
 target_include_directories(${PROJECT_NAME} PUBLIC
   ${PCL_INCLUDE_DIRS}
+  ${pcl_msgs_INCLUDE_DIRS}
   ${APR_INCLUDE_DIRS}
   common
   common/rapidjson
