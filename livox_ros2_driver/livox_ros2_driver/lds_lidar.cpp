@@ -674,6 +674,16 @@ int LdsLidar::ParseConfigFile(const char *pathname) {
             continue;
           }
 
+          if (object.HasMember("ip") &&
+              object["ip"].IsString()) {
+            std::string ip = object["ip"].GetString();
+            std::memcpy(config.ip, ip.c_str(),
+                        sizeof(config.ip));
+          } else {
+            printf("User config file parse error\n");
+            continue;
+          }
+
           if (object.HasMember("enable_connect") &&
               object["enable_connect"].IsBool()) {
             config.enable_connect = object["enable_connect"].GetBool();

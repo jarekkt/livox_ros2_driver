@@ -131,6 +131,7 @@ typedef union {
 /** Configuration in json config file for livox lidar */
 typedef struct {
   char broadcast_code[16];
+  char ip[15];
   bool enable_connect;
   bool enable_fan;
   uint32_t return_mode;

@@ -27,6 +27,7 @@
 #include <inttypes.h>
 #include <math.h>
 #include <stdint.h>
+#include <algorithm>
 
 #include <rclcpp/rclcpp.hpp>
 #include <pcl_conversions/pcl_conversions.h>
@@ -616,8 +617,9 @@ std::shared_ptr<rclcpp::PublisherBase> Lddc::GetCurrentPublisher(uint8_t handle)
     if (!private_pub_[handle]) {
       char name_str[48];
       memset(name_str, 0, sizeof(name_str));
-      snprintf(name_str, sizeof(name_str), "livox/lidar_%s",
-          lds_->lidars_[handle].info.broadcast_code);
+      std::string ip = lds_->lidars_[handle].info.ip;
+      std::replace(ip.begin(), ip.end(), '.', '_');
+      snprintf(name_str, sizeof(name_str), "livox/lidar_%s", ip.c_str());
       std::string topic_name(name_str);
       queue_size = queue_size * 2; // queue size is 64 for only one lidar
       private_pub_[handle] = CreatePublisher(transfer_format_, topic_name,
@@ -640,8 +642,9 @@ std::shared_ptr<rclcpp::PublisherBase> Lddc::GetCurrentImuPublisher(uint8_t hand
     if (!private_imu_pub_[handle]) {
       char name_str[48];
       memset(name_str, 0, sizeof(name_str));
-      snprintf(name_str, sizeof(name_str), "livox/imu_%s",
-          lds_->lidars_[handle].info.broadcast_code);
+      std::string ip = lds_->lidars_[handle].info.ip;
+      std::replace(ip.begin(), ip.end(), '.', '_');
+      snprintf(name_str, sizeof(name_str), "livox/imu_%s", ip.c_str());
       std::string topic_name(name_str);
       queue_size = queue_size * 2; // queue size is 64 for only one lidar
       private_imu_pub_[handle] = CreatePublisher(kLivoxImuMsg, topic_name,

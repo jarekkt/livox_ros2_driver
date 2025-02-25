@@ -630,6 +630,16 @@ int LdsHub::ParseConfigFile(const char *pathname) {
             continue;
           }
 
+          if (object.HasMember("ip") &&
+              object["ip"].IsString()) {
+            std::string ip = object["ip"].GetString();
+            std::memcpy(config.ip, ip.c_str(),
+                        sizeof(config.ip));
+          } else {
+            printf("User config file parse error\n");
+            continue;
+          }
+
           if (object.HasMember("enable_fan") && object["enable_fan"].IsBool()) {
             config.enable_fan = object["enable_fan"].GetBool();
           }
